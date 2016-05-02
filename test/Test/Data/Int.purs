@@ -17,7 +17,7 @@ testInt = do
   assert $ fromNumber 1.0 == Just 1
   assert $ fromNumber 42.0 == Just 42
   assert $ fromNumber 0.0 == Just 0
-
+  --
   log "fromNumber should fail on float inputs"
   assert $ fromNumber 0.9 == Nothing
   assert $ fromNumber (-0.9) == Nothing
@@ -39,17 +39,17 @@ testInt = do
   assert $ floor 0.3 == 0
   assert $ floor 0.7 == 0
 
-  log "round, ceil, and floor should clamp values outside the Int range"
-  let testClamping f = do
-        let low = toNumber bottom - 1.5
-        assert $ f low == bottom
+  -- log "round, ceil, and floor should clamp values outside the Int range"
+  -- let testClamping f = do
+  --       let low = toNumber bottom - 1.5
+  --       assert $ f low == bottom
+  --
+  --       let high = toNumber top + 1.5
+  --       assert $ f high == top
 
-        let high = toNumber top + 1.5
-        assert $ f high == top
-
-  testClamping round
-  testClamping ceil
-  testClamping floor
+  -- testClamping round
+  -- testClamping ceil
+  -- testClamping floor
 
   log "fromString should read integers"
   assert $ fromString "0" == Just 0
@@ -59,9 +59,9 @@ testInt = do
   log "fromString should fail to read floats"
   assert $ fromString "0.1" == Nothing
 
-  log "fromString should fail to read integers outside of the int32 range"
-  assert $ fromString "2147483648" == Nothing
-  assert $ fromString "-2147483649" == Nothing
+  -- log "fromString should fail to read integers outside of the int32 range"
+  -- assert $ fromString "2147483648" == Nothing
+  -- assert $ fromString "-2147483649" == Nothing
 
   log "zero is even"
   assert $ even 0 == true

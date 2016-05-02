@@ -10,7 +10,6 @@ module Data.Int
   ) where
 
 import Data.Boolean (otherwise)
-import Data.Bounded (top, bottom)
 import Data.Eq ((==), (/=))
 import Data.Function ((<<<))
 import Data.Int.Bits ((.&.))
@@ -53,8 +52,6 @@ round = unsafeClamp <<< Math.round
 -- | non-integral.
 unsafeClamp :: Number -> Int
 unsafeClamp x
-  | x >= toNumber top = top
-  | x <= toNumber bottom = bottom
   | otherwise = unsafePartial (fromJust (fromNumber x))
 
 -- | Converts an `Int` value back into a `Number`. Any `Int` is a valid `Number`

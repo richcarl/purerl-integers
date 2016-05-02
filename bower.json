@@ -18,11 +18,15 @@
   ],
   "dependencies": {
     "purescript-maybe": "^1.0.0-rc.1",
-    "purescript-math": "^1.0.0-rc.1",
-    "purescript-partial": "^1.1.0"
+    "purescript-math": "../purescript-math#master",
+    "purescript-partial": "../purescript-partial#master"
   },
   "devDependencies": {
-    "purescript-assert": "^1.0.0-rc.1",
-    "purescript-console": "^1.0.0-rc.1"
+    "purescript-assert": "../purescript-assert#master",
+    "purescript-console": "../purescript-console#master"
+  },
+  "resolutions": {
+    "purescript-eff": "master",
+    "purescript-prelude": "master"
   }
 }
