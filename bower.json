@@ -17,7 +17,7 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-maybe": "^1.0.0-rc.1",
+    "purescript-maybe": "^1.0.0",
     "purescript-math": "../purescript-math#master",
     "purescript-partial": "../purescript-partial#master"
   },
