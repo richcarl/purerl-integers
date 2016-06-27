@@ -18,15 +18,14 @@
   ],
   "dependencies": {
     "purescript-maybe": "^1.0.0",
-    "purescript-math": "../purescript-math#master",
-    "purescript-partial": "../purescript-partial#master"
+    "purescript-math": "git://github.com/purerl/purescript-math.git#master",
+    "purescript-partial": "git://github.com/purerl/purescript-partial.git#master"
   },
   "devDependencies": {
-    "purescript-assert": "../purescript-assert#master",
-    "purescript-console": "../purescript-console#master"
+    "purescript-assert": "git://github.com/purerl/purescript-assert.git#master",
+    "purescript-console": "git://github.com/purerl/purescript-console.git#master"
   },
   "resolutions": {
-    "purescript-eff": "master",
     "purescript-prelude": "master"
   }
 }
