@@ -1,6 +1,6 @@
 % module Data.Int
 -module(data_int@foreign).
--export([fromNumberImpl/1, toNumber/1, fromStringImpl/1]).
+-export([fromNumberImpl/1, toNumber/1, fromStringAsImpl/1, toStringAs/1]).
 
 fromNumberImpl(Just) ->
   fun (Nothing) ->
@@ -14,9 +14,16 @@ fromNumberImpl(Just) ->
 
 toNumber(N) -> float(N).
 
-fromStringImpl(Just) ->
+fromStringAsImpl(Just) ->
   fun (Nothing) ->
-    fun (S) ->
-      try Just(list_to_integer(S)) catch error:badarg -> Nothing end
+    fun (Radix) ->
+      fun (S) ->
+        try Just(list_to_integer(S, Radix)) catch error:badarg -> Nothing end
+      end
     end
+  end.
+
+toStringAs(Radix) ->
+  fun (I) ->
+    integer_to_list(I, Radix)
   end.

@@ -94,10 +94,10 @@ testInt = do
   assert $ fromStringAs hexadecimal "1g" == Nothing
 
   log "toStringAs should transform to a different base"
-  assert $ toStringAs hexadecimal 255 == "ff"
+  assert $ toStringAs hexadecimal 255 == "ff" || toStringAs hexadecimal 255 == "FF"
   assert $ toStringAs binary 4 == "100"
   assert $ toStringAs binary (-4) == "-100"
-  assert $ toStringAs hexadecimal 2147483647 == "7fffffff"
+  assert $ toStringAs hexadecimal 2147483647 == "7fffffff" || toStringAs hexadecimal 2147483647 == "7FFFFFFF"
 
   log "zero is even"
   assert $ even 0 == true
