@@ -5,7 +5,7 @@ module Data.Int
   , round
   , toNumber
   , fromString
-  , Radix()
+  , Radix
   , radix
   , binary
   , octal
@@ -14,21 +14,19 @@ module Data.Int
   , base36
   , fromStringAs
   , toStringAs
+  , Parity(..)
+  , parity
   , even
   , odd
+  , pow
   ) where
 
-import Data.Boolean (otherwise)
-import Data.BooleanAlgebra ((&&))
-import Data.Eq ((==), (/=))
-import Data.Function ((<<<))
+import Prelude
+
 import Data.Int.Bits ((.&.))
-import Data.Maybe (Maybe(..), fromJust)
-import Data.Ord ((<=), (>=))
+import Data.Maybe (Maybe(..), fromMaybe)
 
 import Math as Math
-
-import Partial.Unsafe (unsafePartial)
 
 -- | Creates an `Int` from a `Number` value. The number must already be an
 -- | integer and fall within the valid range of values for the `Int` type
@@ -43,26 +41,28 @@ foreign import fromNumberImpl
   -> Maybe Int
 
 -- | Convert a `Number` to an `Int`, by taking the closest integer equal to or
--- | less than the argument. Values outside the `Int` range are clamped.
+-- | less than the argument. Values outside the `Int` range are clamped, `NaN`
+-- | and `Infinity` values return 0.
 floor :: Number -> Int
 floor = unsafeClamp <<< Math.floor
 
 -- | Convert a `Number` to an `Int`, by taking the closest integer equal to or
--- | greater than the argument. Values outside the `Int` range are clamped.
+-- | greater than the argument. Values outside the `Int` range are clamped,
+-- | `NaN` and `Infinity` values return 0.
 ceil :: Number -> Int
 ceil = unsafeClamp <<< Math.ceil
 
 -- | Convert a `Number` to an `Int`, by taking the nearest integer to the
--- | argument. Values outside the `Int` range are clamped.
+-- | argument. Values outside the `Int` range are clamped, `NaN` and `Infinity`
+-- | values return 0.
 round :: Number -> Int
 round = unsafeClamp <<< Math.round
 
 -- | Convert an integral `Number` to an `Int`, by clamping to the `Int` range.
--- | This function will throw an error at runtime if the argument is
--- | non-integral.
+-- | This function will return 0 if the input is `NaN` or an `Infinity`.
 unsafeClamp :: Number -> Int
 unsafeClamp x
-  | otherwise = unsafePartial (fromJust (fromNumber x))
+  | otherwise = fromMaybe 0 (fromNumber x)
 
 -- | Converts an `Int` value back into a `Number`. Any `Int` is a valid `Number`
 -- | so there is no loss of precision with this function.
@@ -73,6 +73,29 @@ foreign import toNumber :: Int -> Number
 -- | `Nothing` is returned.
 fromString :: String -> Maybe Int
 fromString = fromStringAs (Radix 10)
+
+-- | A type for describing whether an integer is even or odd.
+data Parity = Even | Odd
+
+derive instance eqParity :: Eq Parity
+derive instance ordParity :: Ord Parity
+
+instance showParity :: Show Parity where
+  show Even = "Even"
+  show Odd = "Odd"
+
+instance boundedParity :: Bounded Parity where
+  bottom = Even
+  top = Odd
+
+-- | Returns whether an `Int` is `Even` or `Odd`.
+-- |
+-- | ``` purescript
+-- | parity 0 == Even
+-- | parity 1 == Odd
+-- | ```
+parity :: Int -> Parity
+parity n = if even n then Even else Odd
 
 -- | Returns whether an `Int` is an even number.
 -- |
@@ -87,7 +110,7 @@ even x = x .&. 1 == 0
 -- |
 -- | ``` purescript
 -- | odd 0 == false
--- | odd 1 == false
+-- | odd 1 == true
 -- | ```
 odd :: Int -> Boolean
 odd x = x .&. 1 /= 0
@@ -130,6 +153,9 @@ radix n | n >= 2 && n <= 36 = Just (Radix n)
 -- | ```
 fromStringAs :: Radix -> String -> Maybe Int
 fromStringAs = fromStringAsImpl Just Nothing
+
+-- | Raise an Int to the power of another Int.
+foreign import pow :: Int -> Int -> Int
 
 foreign import fromStringAsImpl
   :: (forall a. a -> Maybe a)

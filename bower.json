@@ -17,15 +17,13 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-maybe": "^2.0.0",
-    "purescript-math": "git://github.com/purerl/purescript-math.git#master",
-    "purescript-partial": "git://github.com/purerl/purescript-partial.git#master"
+    "purescript-globals": "^3.0.0",
+    "purescript-math": "^2.0.0",
+    "purescript-maybe": "^3.0.0",
+    "purescript-partial": "^1.2.0"
   },
   "devDependencies": {
-    "purescript-assert": "git://github.com/purerl/purescript-assert.git#master",
-    "purescript-console": "git://github.com/purerl/purescript-console.git#master"
-  },
-  "resolutions": {
-    "purescript-prelude": "master"
+    "purescript-assert": "^3.0.0",
+    "purescript-console": "^3.0.0"
   }
 }

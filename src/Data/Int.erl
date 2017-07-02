@@ -1,6 +1,6 @@
 % module Data.Int
 -module(data_int@foreign).
--export([fromNumberImpl/1, toNumber/1, fromStringAsImpl/1, toStringAs/1]).
+-export([fromNumberImpl/1, toNumber/1, fromStringAsImpl/1, toStringAs/1, pow/2]).
 
 fromNumberImpl(Just) ->
   fun (Nothing) ->
@@ -27,3 +27,5 @@ toStringAs(Radix) ->
   fun (I) ->
     integer_to_list(I, Radix)
   end.
+
+pow(X,Y) -> trunc(math:pow(X,Y)).
