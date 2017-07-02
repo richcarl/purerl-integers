@@ -61,8 +61,7 @@ round = unsafeClamp <<< Math.round
 -- | Convert an integral `Number` to an `Int`, by clamping to the `Int` range.
 -- | This function will return 0 if the input is `NaN` or an `Infinity`.
 unsafeClamp :: Number -> Int
-unsafeClamp x
-  | otherwise = fromMaybe 0 (fromNumber x)
+unsafeClamp x = fromMaybe 0 (fromNumber x)
 
 -- | Converts an `Int` value back into a `Number`. Any `Int` is a valid `Number`
 -- | so there is no loss of precision with this function.
