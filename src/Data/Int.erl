@@ -10,8 +10,8 @@ fromNumberImpl(Just, Nothing, N) ->
 toNumber(N) -> float(N).
 
 fromStringAsImpl(Just,Nothing,Radix,S) ->
-  try Just(list_to_integer(S, Radix)) catch error:badarg -> Nothing end.
+  try Just(binary_to_integer(S, Radix)) catch error:badarg -> Nothing end.
 
-toStringAs(Radix,I) -> integer_to_list(I, Radix).
+toStringAs(Radix,I) -> integer_to_binary(I, Radix).
 
 pow(X,Y) -> trunc(math:pow(X,Y)).

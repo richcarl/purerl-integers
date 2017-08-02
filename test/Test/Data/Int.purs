@@ -8,8 +8,6 @@ import Control.Monad.Eff.Console (CONSOLE, log)
 import Data.Int (odd, even, fromString, floor, ceil, round, toNumber, fromNumber, fromStringAs, binary, octal, hexadecimal, radix, toStringAs, pow)
 import Data.Maybe (Maybe(..), fromJust)
 
-import Global (nan, infinity)
-
 import Partial.Unsafe (unsafePartial)
 
 import Test.Assert (ASSERT, assert)
@@ -61,9 +59,9 @@ testInt = do
   --       assert $ f nan == 0
   --       assert $ f infinity == 0
 
-  testNonNumber round
-  testNonNumber ceil
-  testNonNumber floor
+  -- testNonNumber round
+  -- testNonNumber ceil
+  -- testNonNumber floor
 
   log "fromString should read integers"
   assert $ fromString "0" == Just 0
