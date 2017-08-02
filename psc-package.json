@@ -1,0 +1,11 @@
+{
+    "name": "integers",
+    "set": "erl-0.11.6",
+    "source": "https://github.com/purerl/package-sets.git",
+    "depends": [
+        "partial",
+        "maybe",
+        "math",
+        "globals"
+    ]
+}
