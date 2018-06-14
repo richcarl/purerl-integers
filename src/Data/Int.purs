@@ -18,6 +18,8 @@ module Data.Int
   , parity
   , even
   , odd
+  , quot
+  , rem
   , pow
   ) where
 
@@ -74,6 +76,28 @@ fromString :: String -> Maybe Int
 fromString = fromStringAs (Radix 10)
 
 -- | A type for describing whether an integer is even or odd.
+-- |
+-- | The `Ord` instance considers `Even` to be less than `Odd`.
+-- |
+-- | The `Semiring` instance allows you to ask about the parity of the results
+-- | of arithmetical operations, given only the parities of the inputs. For
+-- | example, the sum of an odd number and an even number is odd, so
+-- | `Odd + Even == Odd`. This also works for multiplication, eg. the product
+-- | of two odd numbers is odd, and therefore `Odd * Odd == Odd`.
+-- |
+-- | More generally, we have that
+-- |
+-- | ```purescript
+-- | parity x + parity y == parity (x + y)
+-- | parity x * parity y == parity (x * y)
+-- | ```
+-- |
+-- | for any integers `x`, `y`. (A mathematician would say that `parity` is a
+-- | *ring homomorphism*.)
+-- |
+-- | After defining addition and multiplication on `Parity` in this way, the
+-- | `Semiring` laws now force us to choose `zero = Even` and `one = Odd`.
+-- | This `Semiring` instance actually turns out to be a `Field`.
 data Parity = Even | Odd
 
 derive instance eqParity :: Eq Parity
@@ -86,6 +110,27 @@ instance showParity :: Show Parity where
 instance boundedParity :: Bounded Parity where
   bottom = Even
   top = Odd
+
+instance semiringParity :: Semiring Parity where
+  zero = Even
+  add x y = if x == y then Even else Odd
+  one = Odd
+  mul Odd Odd = Odd
+  mul _ _ = Even
+
+instance ringParity :: Ring Parity where
+  sub = add
+
+instance commutativeRingParity :: CommutativeRing Parity
+
+instance euclideanRingParity :: EuclideanRing Parity where
+  degree Even = 0
+  degree Odd = 1
+  div x _ = x
+  mod _ _ = Even
+
+instance divisionRingParity :: DivisionRing Parity where
+  recip = identity
 
 -- | Returns whether an `Int` is `Even` or `Odd`.
 -- |
@@ -152,6 +197,41 @@ radix n | n >= 2 && n <= 36 = Just (Radix n)
 -- | ```
 fromStringAs :: Radix -> String -> Maybe Int
 fromStringAs = fromStringAsImpl Just Nothing
+
+-- | The `quot` function provides _truncating_ integer division (see the
+-- | documentation for the `EuclideanRing` class). It is identical to `div` in
+-- | the `EuclideanRing Int` instance if the dividend is positive, but will be
+-- | slightly different if the dividend is negative. For example:
+-- |
+-- | ```purescript
+-- | div 2 3 == 0
+-- | quot 2 3 == 0
+-- |
+-- | div (-2) 3 == (-1)
+-- | quot (-2) 3 == 0
+-- |
+-- | div 2 (-3) == 0
+-- | quot 2 (-3) == 0
+-- | ```
+foreign import quot :: Int -> Int -> Int
+
+-- | The `rem` function provides the remainder after _truncating_ integer
+-- | division (see the documentation for the `EuclideanRing` class). It is
+-- | identical to `mod` in the `EuclideanRing Int` instance if the dividend is
+-- | positive, but will be slightly different if the dividend is negative. For
+-- | example:
+-- |
+-- | ```purescript
+-- | mod 2 3 == 2
+-- | rem 2 3 == 2
+-- |
+-- | mod (-2) 3 == 1
+-- | rem (-2) 3 == (-2)
+-- |
+-- | mod 2 (-3) == 2
+-- | rem 2 (-3) == 2
+-- | ```
+foreign import rem :: Int -> Int -> Int
 
 -- | Raise an Int to the power of another Int.
 foreign import pow :: Int -> Int -> Int
