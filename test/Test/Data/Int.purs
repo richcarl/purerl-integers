@@ -55,6 +55,7 @@ testInt = do
   -- let testNonNumber f = do
   --       assert $ f nan == 0
   --       assert $ f infinity == 0
+        -- assert $ f (-infinity) == 0
 
   -- testNonNumber round
   -- testNonNumber ceil
