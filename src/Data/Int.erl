@@ -1,10 +1,12 @@
 -module(data_int@foreign).
 -export([fromNumberImpl/3,toNumber/1,fromStringAsImpl/4,toStringAs/2,pow/2,quot/2,'rem'/2]).
 
-fromNumberImpl(Just, Nothing, N) ->
-  case trunc(N) of
-    N1 when N1 == N -> Just(N1);
-    _ -> Nothing
+fromNumberImpl(Just, Nothing, N) when is_float(N) ->
+  %% this uses only float ops that should be trivial and exact
+  Abs = abs(N),
+  AbsFloor = math:floor(Abs),
+  if AbsFloor =:= Abs, Abs =< 9.007199254740991e15 -> Just(trunc(N));
+     true -> Nothing
   end.
 
 toNumber(N) -> float(N).

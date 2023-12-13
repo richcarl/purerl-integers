@@ -60,10 +60,14 @@ ceil = unsafeClamp <<< Math.ceil
 round :: Number -> Int
 round = unsafeClamp <<< Math.round
 
--- | Convert an integral `Number` to an `Int`, by clamping to the `Int` range.
--- | This function will return 0 if the input is `NaN` or an `Infinity`.
+-- | Convert an integral `Number` to an `Int`, by clamping to the range of
+-- | integers which have an exact representation as floats. This function
+-- | will return 0 if the input is `NaN` or an `Infinity`.
 unsafeClamp :: Number -> Int
-unsafeClamp x = fromMaybe 0 (fromNumber x)
+unsafeClamp x
+  | x >= 9007199254740991.0 = 9007199254740991
+  | x <= -9007199254740991.0 = -9007199254740991
+  | otherwise = fromMaybe 0 (fromNumber x)
 
 -- | Converts an `Int` value back into a `Number`. Any `Int` is a valid `Number`
 -- | so there is no loss of precision with this function.
