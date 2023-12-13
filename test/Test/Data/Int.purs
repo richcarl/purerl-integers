@@ -38,18 +38,19 @@ testInt = do
   assert $ floor 0.3 == 0
   assert $ floor 0.7 == 0
 
-  -- log "round, ceil, and floor should clamp values outside the Int range"
-  -- let testClamping f = do
-  --       let low = toNumber bottom - 1.5
-  --       assert $ f low == bottom
-  --
-  --       let high = toNumber top + 1.5
-  --       assert $ f high == top
+  log "round, ceil, and floor should clamp values outside the exact range"
+  let testClamping f = do
+        let bottom = -9007199254740991
+        let low = toNumber bottom - 1.5
+        assert $ f low == bottom
 
-  -- testClamping round
-  -- testClamping ceil
-  -- testClamping floor
+        let top = 9007199254740991
+        let high = toNumber top + 1.5
+        assert $ f high == top
 
+  testClamping round
+  testClamping ceil
+  testClamping floor
 
   -- log "round, ceil, and floor should return 0 for NaN and Infinities"
   -- let testNonNumber f = do
